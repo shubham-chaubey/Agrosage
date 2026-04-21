@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% block title %}Crop Recommendation | AgroSage{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
+        <div class="section-label">ML Prediction Engine</div>
+        <h1>Crop Recommendation</h1>
+        <p>Enter your soil and climate parameters. Our machine learning model will predict the most suitable crop for your field — in both English and Hindi.</p>
+      </div>
+      <div class="page-hero-stats">
+        <div class="mini-stat"><span>100+</span><small>Crops</small></div>
+        <div class="mini-stat"><span>95%</span><small>Accuracy</small></div>
+        <div class="mini-stat"><span>3</span><small>Languages</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="rec-layout">
+
+      <!-- ── FORM PANEL ── -->
+      <div class="rec-form-panel">
+        <div class="panel-header">
+          <h2>Enter Field Parameters</h2>
+          <p>All 7 values are required for an accurate prediction.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('recommendation') }}" class="rec-form" id="recForm">
+
+          <!-- Soil Nutrients -->
+          <div class="form-section-title">
+            <span class="form-section-icon">🧪</span> Soil Nutrients (kg/ha)
+          </div>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label for="nitrogen">Nitrogen (N)</label>
+              <input type="number" id="nitrogen" name="nitrogen"
+                     placeholder="e.g. 90" min="0" max="200" step="1"
+                     value="{{ request.form.nitrogen or '' }}" required>
+              <span class="field-hint">0 – 200 kg/ha</span>
+            </div>
+            <div class="form-group">
+              <label for="phosphorus">Phosphorus (P)</label>
+              <input type="number" id="phosphorus" name="phosphorus"
+                     placeholder="e.g. 42" min="0" max="200" step="1"
+                     value="{{ request.form.phosphorus or '' }}" required>
+              <span class="field-hint">0 – 200 kg/ha</span>
+            </div>
+            <div class="form-group">
+              <label for="potassium">Potassium (K)</label>
+              <input type="number" id="potassium" name="potassium"
+                     placeholder="e.g. 43" min="0" max="200" step="1"
+                     value="{{ request.form.potassium or '' }}" required>
+              <span class="field-hint">0 – 200 kg/ha</span>
+            </div>
+          </div>
+
+          <!-- Climate Parameters -->
+          <div class="form-section-title" style="margin-top:20px;">
+            <span class="form-section-icon">🌡️</span> Climate Parameters
+          </div>
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="temperature">Temperature (°C)</label>
+              <input type="number" id="temperature" name="temperature"
+                     placeholder="e.g. 25.5" min="0" max="60" step="0.1"
+                     value="{{ request.form.temperature or '' }}" required>
+              <span class="field-hint">0 – 60 °C</span>
+            </div>
+            <div class="form-group">
+              <label for="humidity">Humidity (%)</label>
+              <input type="number" id="humidity" name="humidity"
+                     placeholder="e.g. 80" min="0" max="100" step="0.1"
+                     value="{{ request.form.humidity or '' }}" required>
+              <span class="field-hint">0 – 100 %</span>
+            </div>
+            <div class="form-group">
+              <label for="ph">pH Level</label>
+              <input type="number" id="ph" name="ph"
+                     placeholder="e.g. 6.5" min="0" max="14" step="0.1"
+                     value="{{ request.form.ph or '' }}" required>
+              <span class="field-hint">0 – 14 (acidic → alkaline)</span>
+            </div>
+            <div class="form-group">
+              <label for="rainfall">Rainfall (mm)</label>
+              <input type="number" id="rainfall" name="rainfall"
+                     placeholder="e.g. 200" min="0" max="3000" step="1"
+                     value="{{ request.form.rainfall or '' }}" required>
+              <span class="field-hint">Annual mm</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6 2 3 7 3 12c0 2 1 4 3 5.5M12 2c3 2 5 5 5 9M12 2v10"/></svg>
+            Recommend Crop
+            <span class="btn-spinner" id="btnSpinner" style="display:none;"></span>
+          </button>
+        </form>
+      </div>
+
+      <!-- ── RESULT / INFO PANEL ── -->
+      <div class="rec-result-panel">
+
+        {% if crop %}
+        <!-- SUCCESS RESULT -->
+        <div class="result-card result-success" id="resultCard">
+          <div class="result-top">
+            <div class="result-icon">🌾</div>
+            <div class="result-badge">Recommended Crop</div>
+          </div>
+          <div class="result-crop-en">{{ crop }}</div>
+          <div class="result-crop-hi">{{ hindi_crop }}</div>
+          {% if confidence %}
+          <div class="confidence-row">
+            <span class="conf-label">Confidence Score</span>
+            <span class="conf-val">{{ confidence }}%</span>
+          </div>
+          <div class="conf-bar-bg">
+            <div class="conf-bar-fill" style="width: {{ confidence }}%;"></div>
+          </div>
+          {% endif %}
+          <a href="{{ url_for('query') }}" class="result-cta">
+            Ask AgroSage about this crop →
+          </a>
+        </div>
+
+        {% elif error %}
+        <!-- ERROR -->
+        <div class="result-card result-error">
+          <div class="result-icon">⚠️</div>
+          <p>{{ error }}</p>
+        </div>
+
+        {% else %}
+        <!-- DEFAULT STATE — guide card -->
+        <div class="guide-card">
+          <h3>What do these values mean?</h3>
+          <div class="guide-item">
+            <strong>N (Nitrogen)</strong>
+            <span>Promotes leafy, green growth. High for cereals.</span>
+          </div>
+          <div class="guide-item">
+            <strong>P (Phosphorus)</strong>
+            <span>Supports root development and flowering.</span>
+          </div>
+          <div class="guide-item">
+            <strong>K (Potassium)</strong>
+            <span>Strengthens stems and improves disease resistance.</span>
+          </div>
+          <div class="guide-item">
+            <strong>pH Level</strong>
+            <span>6–7 is ideal for most crops. Below 6 = acidic, above 7 = alkaline.</span>
+          </div>
+          <div class="guide-item">
+            <strong>Rainfall</strong>
+            <span>Annual rainfall in mm. Check your district records.</span>
+          </div>
+          <div class="guide-tip">
+            💡 <strong>Tip:</strong> Use your local Krishi Vigyan Kendra (KVK) soil test report to get accurate NPK values.
+          </div>
+        </div>
+
+        <!-- Sample values quick-fill -->
+        <div class="samples-card">
+          <h4>Try Sample Values</h4>
+          <div class="sample-btns">
+            <button class="sample-btn" data-n="90" data-p="42" data-k="43" data-t="20.8" data-h="82" data-ph="6.5" data-r="202">Rice</button>
+            <button class="sample-btn" data-n="68" data-p="91" data-k="57" data-t="22.6" data-h="57" data-ph="6.9" data-r="76">Wheat</button>
+            <button class="sample-btn" data-n="100" data-p="16" data-k="19" data-t="27" data-h="65" data-ph="5.8" data-r="75">Maize</button>
+            <button class="sample-btn" data-n="10" data-p="50" data-k="41" data-t="36" data-h="28" data-ph="7.4" data-r="90">Cotton</button>
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Sample values quick-fill
+document.querySelectorAll('.sample-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('nitrogen').value    = btn.dataset.n;
+    document.getElementById('phosphorus').value  = btn.dataset.p;
+    document.getElementById('potassium').value   = btn.dataset.k;
+    document.getElementById('temperature').value = btn.dataset.t;
+    document.getElementById('humidity').value    = btn.dataset.h;
+    document.getElementById('ph').value          = btn.dataset.ph;
+    document.getElementById('rainfall').value    = btn.dataset.r;
+  });
+});
+
+// Spinner on submit
+document.getElementById('recForm').addEventListener('submit', () => {
+  document.getElementById('btnSpinner').style.display = 'inline-block';
+  document.getElementById('submitBtn').disabled = true;
+});
+</script>
+{% endblock %}

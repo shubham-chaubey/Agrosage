@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block title %}AgroSage Assistant | Chat{% endblock %}
+
+{% block content %}
+<div class="chat-wrapper">
+  <div class="chat-header">
+    <h1>🌾 AgroSage Assistant</h1>
+    <p class="description">Ask your farming question below. AgroSage will respond in a clear, friendly format.</p>
+  </div>
+
+  <div class="chat-history" id="chat-history"></div>
+
+  <form id="query-form" class="chat-input">
+    <div class="input-bar">
+      <textarea name="question" id="question" rows="1" placeholder="Type your question..." required></textarea>
+      <button type="submit" class="send-icon" title="Send">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 24 24">
+          <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+        </svg>
+      </button>
+    </div>
+  </form>
+</div>
+
+<style>
+  .chat-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 60px);
+    max-width: 1000px;
+    margin: auto;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+
+  .chat-header {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #eee;
+  }
+
+  .chat-history {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #fff;
+  }
+
+  .chat-bubble {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 12px;
+    max-width: 70%;
+    animation: fadeIn 0.4s ease-in;
+  }
+
+  .chat-bubble.user {
+    background-color: #e0f7fa;
+    width: 30%;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .chat-bubble.system {
+    background-color: #fff3e0;
+    align-self: flex-start;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .chat-bubble .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #555;
+  }
+
+  .chat-input {
+    position: sticky;
+    bottom: 0;
+    background-color: #f9f9f9;
+    padding: 0;
+    border-top: 1px solid #eee;
+    z-index: 10;
+  }
+
+  .input-bar {
+    display: flex;
+    align-items: flex-end;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 24px;
+    padding: 12px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    width: 550px;
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  .input-bar textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    resize: none;
+    font-size: 1em;
+    padding: 12px;
+    border-radius: 20px;
+    font-family: inherit;
+    background-color: transparent;
+    max-height: 300px;
+    overflow-y: hidden;
+  }
+
+  .send-icon {
+    background-color: #4caf50;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .send-icon:hover {
+    background-color: #45a049;
+  }
+
+  .typing {
+    font-style: italic;
+    color: #888;
+    animation: blink 1.2s infinite;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('query-form');
+  const history = document.getElementById('chat-history');
+  const textarea = document.getElementById('question');
+
+  // Auto-expand textarea
+  textarea.addEventListener('input', () => {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  });
+
+  // Submit on Enter key
+  textarea.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      form.dispatchEvent(new Event('submit'));
+    }
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const question = textarea.value.trim();
+    if (!question) return;
+
+    // Show user message instantly
+    const userBubble = document.createElement('div');
+    userBubble.className = 'chat-bubble user';
+    userBubble.innerHTML = `<div class="label">🧑‍🌾 You</div><p>${question}</p>`;
+    history.appendChild(userBubble);
+    history.scrollTop = history.scrollHeight;
+
+    // Show typing animation
+    const typingBubble = document.createElement('div');
+    typingBubble.className = 'chat-bubble system';
+    typingBubble.id = 'typing';
+    typingBubble.innerHTML = `<div class="label">🌱 AgroSage</div><p class="typing">Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>`;
+    history.appendChild(typingBubble);
+    history.scrollTop = history.scrollHeight;
+
+    // Send query to server via AJAX
+    const response = await fetch('{{ url_for("query") }}', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: new URLSearchParams({ question })
+    });
+
+    const data = await response.json();
+    const answer = data.answer || '⚠️ No response received.';
+
+    // Remove typing animation
+    typingBubble.remove();
+
+    // Show AI response
+    const aiBubble = document.createElement('div');
+    aiBubble.className = 'chat-bubble system fade-in';
+    aiBubble.innerHTML = `<div class="label">🌱 AgroSage</div><p>${answer}</p>`;
+    history.appendChild(aiBubble);
+    history.scrollTop = history.scrollHeight;
+
+    // Clear input
+    textarea.value = '';
+    textarea.style.height = '40px';
+  });
+</script>
+{% endblock %}

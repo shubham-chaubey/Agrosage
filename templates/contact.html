@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Contact | AgroSage{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label" style="color:var(--g4)">Get In Touch</div>
+    <h1 style="font-size:30px;font-weight:800;color:white;margin-top:4px;">Contact Us</h1>
+    <p style="color:rgba(255,255,255,.65);font-size:14px;max-width:440px;margin-top:8px;">
+      Questions, feedback, or suggestions? We'd love to hear from you.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width:560px;">
+
+    <form method="POST" action="{{ url_for('contact') }}" class="contact-form">
+      <div class="form-group">
+        <label for="c-name">Your Name</label>
+        <input type="text" id="c-name" name="name" placeholder="e.g. Ramesh Kumar" required>
+      </div>
+      <div class="form-group">
+        <label for="c-email">Your Email</label>
+        <input type="email" id="c-email" name="email" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="c-msg">Your Message</label>
+        <textarea id="c-msg" name="message" rows="5" placeholder="Type your message here..." required style="resize:vertical;"></textarea>
+      </div>
+      <button type="submit" class="btn-submit">Send Message</button>
+    </form>
+
+  </div>
+</section>
+
+<style>
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.contact-form .form-group label { font-size:12px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.5px; display:block; margin-bottom:5px; }
+.contact-form input, .contact-form textarea {
+  width:100%;
+  border:1.5px solid var(--border);
+  background:var(--bg);
+  color:var(--text);
+  border-radius:var(--radius-sm);
+  padding:10px 14px;
+  font-size:14px;
+  font-family:var(--font);
+  outline:none;
+  transition:border .18s;
+}
+.contact-form input:focus, .contact-form textarea:focus { border-color:var(--g3); background:white; }
+</style>
+{% endblock %}

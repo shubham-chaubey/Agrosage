@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Login | AgroSage{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">🌱</div>
+    <h1 class="auth-title" data-en="Welcome Back" data-hi="वापसी पर स्वागत है">Welcome Back</h1>
+    <p class="auth-sub" data-en="Login to your AgroSage account" data-hi="अपने एग्रोसेज खाते में लॉगिन करें">Login to your AgroSage account</p>
+
+    <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form" id="loginForm">
+      <div class="auth-field">
+        <label data-en="Username" data-hi="उपयोगकर्ता नाम">Username</label>
+        <div class="input-icon-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <input type="text" name="username" placeholder="Enter your username" required autocomplete="username">
+        </div>
+      </div>
+      <div class="auth-field">
+        <label data-en="Password" data-hi="पासवर्ड">Password</label>
+        <div class="input-icon-wrap">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <input type="password" name="password" id="loginPwd" placeholder="Enter your password" required autocomplete="current-password">
+          <button type="button" class="toggle-pwd" data-target="loginPwd">👁</button>
+        </div>
+      </div>
+      <button type="submit" class="btn-auth-submit">
+        <span data-en="Login →" data-hi="लॉगिन करें →">Login →</span>
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      <span data-en="Don't have an account?" data-hi="खाता नहीं है?">Don't have an account?</span>
+      <a href="{{ url_for('auth.signup') }}" data-en="Sign Up" data-hi="साइन अप करें">Sign Up</a>
+    </p>
+  </div>
+
+  <!-- Right decorative panel -->
+  <div class="auth-panel">
+    <div class="auth-panel-content">
+      <div class="auth-panel-icon">🌾</div>
+      <h2 data-en="Smart Crop Guidance" data-hi="स्मार्ट फसल मार्गदर्शन">Smart Crop Guidance</h2>
+      <p data-en="Login to access personalized crop recommendations and AI-powered farming advice."
+         data-hi="व्यक्तिगत फसल सुझाव और AI-आधारित खेती सलाह पाने के लिए लॉगिन करें।">
+        Login to access personalized crop recommendations and AI-powered farming advice.
+      </p>
+      <div class="auth-features">
+        <div class="auth-feat"><span>✅</span> <span data-en="ML Crop Predictions" data-hi="ML फसल भविष्यवाणी">ML Crop Predictions</span></div>
+        <div class="auth-feat"><span>✅</span> <span data-en="Bilingual AI Chat"   data-hi="द्विभाषी AI चैट">Bilingual AI Chat</span></div>
+        <div class="auth-feat"><span>✅</span> <span data-en="Govt. Schemes Info"  data-hi="सरकारी योजनाएं">Govt. Schemes Info</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

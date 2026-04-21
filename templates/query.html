@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}Ask Query | AgroSage{% endblock %}
+
+{% block content %}
+<div class="query-page">
+
+  <!-- ── LEFT: CHAT ── -->
+  <div class="chat-container">
+    <div class="chat-head">
+      <div class="chat-avatar">🌿</div>
+      <div class="chat-head-info">
+        <h2 data-en="AgroSage Assistant" data-hi="एग्रोसेज सहायक">AgroSage Assistant</h2>
+        <p><span class="online-dot"></span>
+          <span data-en="Online · Bilingual (Hindi / English)" data-hi="ऑनलाइन · द्विभाषी (हिंदी / अंग्रेज़ी)">Online · Bilingual</span>
+        </p>
+      </div>
+      <button class="clear-chat-btn" id="clearChatBtn" title="Clear chat">🗑</button>
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg bot">
+        <div class="msg-bubble">
+          <strong>Namaste! 🙏 I am AgroSage</strong>, your AI farming assistant.<br><br>
+          I can help you with crop recommendations, fertilizer advice,
+          sowing calendars, government schemes, and more.<br><br>
+          <em>You can ask in Hindi too! (आप हिंदी में भी पूछ सकते हैं!)</em>
+        </div>
+        <div class="msg-time">AgroSage · now</div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="suggested-questions" id="suggestedQs">
+        <button class="sq-btn" onclick="fillQuery(this)">Best crop for sandy soil?</button>
+        <button class="sq-btn" onclick="fillQuery(this)">धान की खेती कैसे करें?</button>
+        <button class="sq-btn" onclick="fillQuery(this)">Fertilizer for wheat?</button>
+        <button class="sq-btn" onclick="fillQuery(this)">PM-Kisan scheme details?</button>
+        <button class="sq-btn" onclick="fillQuery(this)">Kharif vs Rabi crops?</button>
+      </div>
+      <form id="queryForm" class="chat-form">
+        <textarea id="questionInput" name="question"
+          placeholder="Type your farming question in Hindi or English..."
+          rows="1" required></textarea>
+        <button type="submit" class="send-btn" id="sendBtn" title="Send">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24">
+            <path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── RIGHT: SIDEBAR ── -->
+  <div class="query-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title" data-en="Quick Topics" data-hi="त्वरित विषय">Quick Topics</div>
+      <button class="topic-btn" onclick="fillQuery(this)">🌱 Crop selection by soil type</button>
+      <button class="topic-btn" onclick="fillQuery(this)">🌿 Fertilizer schedule for rice</button>
+      <button class="topic-btn" onclick="fillQuery(this)">💧 Irrigation tips for wheat</button>
+      <button class="topic-btn" onclick="fillQuery(this)">💰 Current MSP rates 2024</button>
+      <button class="topic-btn" onclick="fillQuery(this)">🏛️ PM-Kisan yojana details</button>
+      <button class="topic-btn" onclick="fillQuery(this)">🔬 How to detect crop disease?</button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title" data-en="Supported Crops" data-hi="समर्थित फसलें">Supported Crops</div>
+      <div class="crop-tags">
+        <span class="ctag">🌾 Rice</span><span class="ctag">🌾 Wheat</span>
+        <span class="ctag">🌽 Maize</span><span class="ctag">🫘 Soybean</span>
+        <span class="ctag">🥜 Groundnut</span><span class="ctag">🧅 Chickpea</span>
+        <span class="ctag">🌱 Lentil</span><span class="ctag">🍌 Banana</span>
+        <span class="ctag">🥭 Mango</span><span class="ctag">🍊 Orange</span>
+        <span class="ctag">🍇 Grapes</span><span class="ctag">🥥 Coconut</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title" data-en="About This AI" data-hi="इस AI के बारे में">About This AI</div>
+      <div class="about-ai-card">
+        <p>Powered by <strong>Gemini 1.5 Flash</strong> with RAG pipeline using <strong>BGE-M3</strong> embeddings.</p>
+        <p>Bilingual support: Hindi &amp; English.</p>
+        <a href="{{ url_for('features') }}" class="sidebar-link" data-en="Learn more →" data-hi="और जानें →">Learn more →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const chatMessages  = document.getElementById('chatMessages');
+const queryForm     = document.getElementById('queryForm');
+const questionInput = document.getElementById('questionInput');
+const sendBtn       = document.getElementById('sendBtn');
+const clearBtn      = document.getElementById('clearChatBtn');
+
+// ── Auto-expand textarea
+questionInput.addEventListener('input', () => {
+  questionInput.style.height = 'auto';
+  questionInput.style.height = Math.min(questionInput.scrollHeight, 140) + 'px';
+});
+
+// ── Enter = send, Shift+Enter = new line
+questionInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    queryForm.dispatchEvent(new Event('submit'));
+  }
+});
+
+// ── Fill from suggestion buttons
+function fillQuery(btn) {
+  const text = btn.textContent.replace(/^[\u{1F300}-\u{1FFFF}\u2600-\u26FF\u2700-\u27BF]\s*/u, '').trim();
+  questionInput.value = text;
+  questionInput.focus();
+  document.getElementById('suggestedQs').style.display = 'none';
+}
+
+// ── Append bubble helper
+function addBubble(role, html) {
+  const wrap = document.createElement('div');
+  wrap.className = `msg ${role}`;
+  wrap.innerHTML = `
+    <div class="msg-bubble">${html}</div>
+    <div class="msg-time">${role === 'user' ? 'You' : 'AgroSage'} · just now</div>`;
+  chatMessages.appendChild(wrap);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return wrap;
+}
+
+// ── Typing dots
+function addTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg bot';
+  wrap.id = 'typingDots';
+  wrap.innerHTML = `<div class="msg-bubble typing-bubble">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+  </div>`;
+  chatMessages.appendChild(wrap);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// MAIN: Submit — simple AJAX fetch (NO SSE / NO streaming)
+// ONE fetch call = ONE Gemini API call = quota-safe
+// ══════════════════════════════════════════════════════════════════
+queryForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const question = questionInput.value.trim();
+  if (!question) return;
+
+  // Disable input while waiting
+  sendBtn.disabled       = true;
+  questionInput.disabled = true;
+  questionInput.value    = '';
+  questionInput.style.height = '44px';
+  document.getElementById('suggestedQs').style.display = 'none';
+
+  // Show user bubble
+  addBubble('user', escapeHtml(question));
+
+  // Show typing dots
+  addTyping();
+
+  try {
+    // Single POST request — backend calls Gemini ONCE and returns JSON
+    const resp = await fetch('/query', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body:    new URLSearchParams({ question })
+    });
+
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+
+    const data   = await resp.json();
+    const answer = data.answer || 'No response received.';
+
+    document.getElementById('typingDots')?.remove();
+    addBubble('bot', answer);
+
+  } catch (err) {
+    document.getElementById('typingDots')?.remove();
+    addBubble('bot', '<p>⚠️ Connection error. Please try again.</p>');
+    console.error('Query error:', err);
+  }
+
+  // Re-enable input
+  sendBtn.disabled       = false;
+  questionInput.disabled = false;
+  questionInput.focus();
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
+// ── Clear chat
+clearBtn.addEventListener('click', () => {
+  chatMessages.innerHTML = `
+    <div class="msg bot">
+      <div class="msg-bubble"><strong>Chat cleared.</strong> Ask me anything about farming! 🌾</div>
+      <div class="msg-time">AgroSage · now</div>
+    </div>`;
+});
+
+// ── Escape HTML to prevent XSS in user messages
+function escapeHtml(text) {
+  return text
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/\n/g,'<br>');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}About | AgroSage{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label" style="color:var(--g4)">Our Mission</div>
+    <h1 style="font-size:30px;font-weight:800;color:white;margin-top:4px;">About AgroSage 2.0</h1>
+    <p style="color:rgba(255,255,255,.65);font-size:14px;max-width:520px;margin-top:8px;line-height:1.7;">
+      Built for India's farmers — combining AI, RAG, and bilingual support to make expert crop guidance accessible to everyone.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width:820px;">
+    <p style="font-size:15px;color:var(--text2);line-height:1.8;margin-bottom:24px;">
+      AgroSage 2.0 is an AI-powered crop recommendation and query system designed to support farmers
+      with smart, data-driven decisions. Our mission is to make agriculture more accessible,
+      efficient, and informed — especially in rural communities of Uttar Pradesh and across India.
+    </p>
+    <div class="features-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <div class="feat-card">
+        <div class="feat-icon green">🌾</div>
+        <h3>Smart Crop Suggestions</h3>
+        <p>Tailored ML-based predictions using NPK, temperature, humidity, pH, and rainfall data.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">🧠</div>
+        <h3>RAG Query Engine</h3>
+        <p>Ask any farming question and get instant, context-aware answers via Gemini 2.5 Flash.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">📊</div>
+        <h3>Agricultural Database</h3>
+        <p>Backed by curated Indian agricultural datasets with crop metadata, seasons, and soil types.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">🌐</div>
+        <h3>Bilingual Support</h3>
+        <p>Responds fluently in Hindi, English, and Bhojpuri — breaking language barriers for rural farmers.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:40px;background:var(--g1);border-radius:var(--radius-lg);padding:28px;color:white;">
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;">Built by</h3>
+      <p style="color:rgba(255,255,255,.7);font-size:14px;line-height:1.8;">
+        Shubham Chaubey, Umesh Kushwaha &amp; Yashdeep<br>
+        <span style="color:var(--gold)">Shambhunath Institute of Engineering &amp; Technology, Jhalwa, Prayagraj</span><br>
+        Guided by Mrs. Himanshi Chaudhary (Assistant Professor)
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

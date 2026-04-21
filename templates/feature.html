@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Features | AgroSage{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label" style="color:var(--g4)">What We Offer</div>
+    <h1 style="font-size:30px;font-weight:800;color:white;margin-top:4px;">Features That Empower Farmers</h1>
+    <p style="color:rgba(255,255,255,.65);font-size:14px;max-width:520px;margin-top:8px;line-height:1.7;">
+      AgroSage combines machine learning, retrieval-augmented generation, and bilingual support into one powerful platform.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon green">🤖</div>
+        <h3>AI Crop Recommendations</h3>
+        <p>Smart ML predictions based on soil NPK values, temperature, humidity, pH, and rainfall — tailored for Bharat's diverse climate zones.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">📚</div>
+        <h3>RAG-Based Q&amp;A</h3>
+        <p>Ask any farming question. Our RAG pipeline retrieves relevant context from the agricultural database and generates precise answers via Gemini AI.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">🌐</div>
+        <h3>Multilingual Support</h3>
+        <p>Fully bilingual in Hindi and English. Understands Bhojpuri too — designed for farmers across Uttar Pradesh and rural India.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">🧠</div>
+        <h3>Conversational Memory</h3>
+        <p>AgroSage remembers the last 6 turns of your conversation for smarter, context-aware replies without repeating yourself.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">📊</div>
+        <h3>Confidence Score</h3>
+        <p>Every crop recommendation includes a confidence percentage from the ML model so you can trust and verify the output.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">🏃</div>
+        <h3>Fast &amp; Lightweight</h3>
+        <p>Optimized Flask backend with AJAX-based chat — works well even on slower rural internet connections.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">🔬</div>
+        <h3>Disease Detection (Soon)</h3>
+        <p>Upcoming CNN-based image recognition to detect plant diseases from crop photos and recommend treatments.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">📋</div>
+        <h3>Feedback System</h3>
+        <p>Farmers can submit questions and suggestions directly — continuously improving AgroSage's knowledge and responses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

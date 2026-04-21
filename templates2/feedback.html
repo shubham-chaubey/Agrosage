@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback | AgroSage 2.0</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  {% include 'header.html' %}
+  <section class="hero">
+    <h2>😊 Your Feedback Matters</h2>
+    <p>Help us grow better. Rate our service and share your thoughts.</p>
+  </section>
+
+  {% if success %}
+    <div id="feedback-status">✅ Thank you for your feedback!</div>
+  {% endif %}
+
+  <form method="POST" action="/feedback">
+    <label>Your Name:</label>
+    <input type="text" name="name" required>
+
+    <label>Email (optional):</label>
+    <input type="email" name="email">
+
+    <label>Your Message:</label>
+    <textarea name="message" rows="4" required></textarea>
+
+    <button type="submit">Submit Feedback</button>
+  </form>
+  {% include 'footer.html' %}
+</body>
+</html>

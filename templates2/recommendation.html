@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Crop Recommendation | AgroSage 2.0{% endblock %}
+
+{% block content %}
+<section class="recommendation-section">
+  <h1>🌾 Best Crop Recommendation</h1>
+  <p class="intro">Enter your soil and climate details to get the most suitable crop for your farm.</p>
+
+  <form method="POST" class="recommendation-form">
+    <div class="form-row">
+      <input type="number" name="nitrogen" placeholder="🧪 Nitrogen (N)" required>
+      <input type="number" name="phosphorus" placeholder="🧪 Phosphorus (P)" required>
+    </div>
+    <div class="form-row">
+      <input type="number" name="potassium" placeholder="🧪 Potassium (K)" required>
+      <input type="number" name="temperature" placeholder="🌡️ Temperature (°C)" required>
+    </div>
+    <div class="form-row">
+      <input type="number" name="humidity" placeholder="💧 Humidity (%)" required>
+      <input type="number" name="ph" placeholder="⚗️ pH Level" step="0.1" required>
+    </div>
+    <div class="form-row">
+      <input type="number" name="rainfall" placeholder="🌧️ Rainfall (mm)" required>
+    </div>
+    <button type="submit" class="recommend-btn">🌱 Recommend Crop</button>
+  </form>
+
+  {% if crop %}
+    <div class="result-box">
+      <h2>Recommended Crop:</h2>
+      <p class="crop-name">English: {{ crop }}</p>
+      <p class="crop-name">Hindi: {{ hindi_crop }}</p>
+      {% if confidence %}
+        <p class="confidence">Confidence: {{ confidence }}%</p>
+      {% endif %}
+    </div>
+  {% elif error %}
+    <div class="error-box">
+      <p>⚠️ {{ error }}</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

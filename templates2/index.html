@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Home | AgroSage{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1>Empowering Farmers with AI</h1>
+  <p>Get smart crop recommendations and instant answers to your farming queries.</p>
+  <a href="{{ url_for('query') }}" class="cta-button">Try Now</a>
+</section>
+
+<section id="features" class="features">
+  <h2>Why AgroSage?</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>🌾 AI Crop Suggestions</h3>
+      <p>Personalized recommendations based on soil, weather, and region.</p>
+    </div>
+    <div class="card">
+      <h3>💬 RAG Query System</h3>
+      <p>Ask any farming question and get instant, reliable answers.</p>
+    </div>
+    <div class="card">
+      <h3>📊 Data-Driven Insights</h3>
+      <p>Powered by FAOSTAT and real-time agricultural data.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

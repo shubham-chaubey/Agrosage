@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block title %}Home | AI Crop Recommendation{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">AI-POWERED AGRICULTURE</div>
+    <h1 class="hero-title">Smart Farming<br><span>Starts Here</span></h1>
+    <p class="hero-sub">
+      Get personalized crop recommendations based on your soil, season, and climate —
+      answered in Hindi or English by our AI assistant.
+    </p>
+    <div class="hero-btns">
+      <a href="{{ url_for('recommendation') }}" class="btn-primary">Get Recommendations →</a>
+      <a href="{{ url_for('query') }}" class="btn-outline">Ask the AI Assistant</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="stat-num">100+</div><div class="stat-label">Crops Covered</div></div>
+      <div class="hero-stat"><div class="stat-num">3</div><div class="stat-label">Languages</div></div>
+      <div class="hero-stat"><div class="stat-num">RAG</div><div class="stat-label">Powered Engine</div></div>
+      <div class="hero-stat"><div class="stat-num">95%</div><div class="stat-label">Accuracy</div></div>
+    </div>
+  </div>
+  <div class="hero-graphic">
+    <div class="hero-circle c1"></div>
+    <div class="hero-circle c2"></div>
+    <div class="hero-circle c3"></div>
+  </div>
+</section>
+
+<!-- ── FEATURES CARDS ── -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">Why AgroSage</div>
+    <h2 class="section-title">Everything a Farmer Needs</h2>
+    <p class="section-sub">From soil analysis to bilingual AI chat — all in one place.</p>
+
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6 2 3 7 3 12c0 2 1 4 3 5.5M12 2c3 2 5 5 5 9M12 2v10"/></svg>
+        </div>
+        <h3>AI Crop Suggestions</h3>
+        <p>ML model trained on soil NPK, temperature, humidity, pH, and rainfall to predict the best crop.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>RAG Query System</h3>
+        <p>Ask any farming question — our RAG pipeline retrieves context from agricultural data and answers via Gemini AI.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3>Bilingual Support</h3>
+        <p>Ask in Hindi or English. Our AI understands and responds naturally in both languages including Bhojpuri.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Data-Driven Insights</h3>
+        <p>Powered by real agricultural datasets with crop metadata, season calendars, and fertilizer schedules.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Confidence Score</h3>
+        <p>Every crop prediction comes with a confidence percentage so you know how reliable the recommendation is.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon gold">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+        </div>
+        <h3>Disease Detection (Soon)</h3>
+        <p>Upcoming CNN-based image recognition to detect plant diseases from photos and suggest remedies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">Process</div>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Get your personalized crop plan in under a minute.</p>
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h4>Enter Soil Data</h4>
+        <p>Input NPK values, pH, temperature, humidity, and rainfall for your field.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h4>ML Prediction</h4>
+        <p>Our trained model analyzes your data and predicts the most suitable crop.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h4>Bilingual Result</h4>
+        <p>Get your result in English and Hindi with a confidence score.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <h4>Ask Follow-ups</h4>
+        <p>Use the AI chat to ask about sowing time, fertilizers, or market prices.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BANNER ── -->
+<section class="cta-banner">
+  <div class="container">
+    <h2>Ready to make smarter farming decisions?</h2>
+    <p>Join thousands of farmers using AgroSage for data-driven crop guidance.</p>
+    <div class="hero-btns" style="justify-content:center;">
+      <a href="{{ url_for('recommendation') }}" class="btn-primary">Start Recommendation →</a>
+      <a href="{{ url_for('query') }}" class="btn-outline-dark">Ask a Question</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

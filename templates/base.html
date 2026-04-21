@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgroSage — {% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══ -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="{{ url_for('home') }}" class="nav-logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 2C6 2 3 7 3 12c0 2 1 4 3 5.5M12 2c3 2 5 5 5 9M12 2v10m0 0c-2 3-5 5-9 6m9-6c2 3 5 5 9 6"/>
+        </svg>
+        <span data-en="AGROSAGE" data-hi="एग्रोसेज">AGROSAGE</span>
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('home') }}"           class="nav-link {% if request.endpoint=='home' %}active{% endif %}"           data-en="Home"           data-hi="होम">Home</a>
+        <a href="{{ url_for('recommendation') }}" class="nav-link {% if request.endpoint=='recommendation' %}active{% endif %}" data-en="Recommendation" data-hi="फसल सुझाव">Recommendation</a>
+        <a href="{{ url_for('query') }}"          class="nav-link {% if request.endpoint=='query' %}active{% endif %}"          data-en="Ask Query"      data-hi="सवाल पूछें">Ask Query</a>
+        <a href="{{ url_for('features') }}"       class="nav-link {% if request.endpoint=='features' %}active{% endif %}"       data-en="Features"       data-hi="विशेषताएं">Features</a>
+        <a href="{{ url_for('contact') }}"        class="nav-link {% if request.endpoint=='contact' %}active{% endif %}"        data-en="Contact"        data-hi="संपर्क">Contact</a>
+      </nav>
+      <div class="nav-controls">
+        <!-- Language toggle -->
+        <div class="lang-switch" id="langSwitch">
+          <button class="lang-btn active" data-val="en">EN</button>
+          <button class="lang-btn"        data-val="hi">हिं</button>
+        </div>
+        <!-- Dark mode button -->
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <!-- Auth -->
+        {% if session.get('user_id') %}
+          <a href="{{ url_for('profile') }}" class="btn-nav-ghost" data-en="👤 {{ session.get('username','User') }}" data-hi="👤 {{ session.get('username','User') }}">👤 {{ session.get('username','User') }}</a>
+          <a href="{{ url_for('auth.logout') }}" class="btn-nav-auth" data-en="Logout" data-hi="लॉगआउट">Logout</a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}"  class="btn-nav-ghost" data-en="Login"   data-hi="लॉगिन">Login</a>
+          <a href="{{ url_for('auth.signup') }}" class="btn-nav-auth"  data-en="Sign Up" data-hi="साइन अप">Sign Up</a>
+        {% endif %}
+        <button class="nav-mobile-btn" id="mobileMenuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="{{ url_for('home') }}"           class="nav-link" data-en="Home"           data-hi="होम">Home</a>
+      <a href="{{ url_for('recommendation') }}" class="nav-link" data-en="Recommendation" data-hi="फसल सुझाव">Recommendation</a>
+      <a href="{{ url_for('query') }}"          class="nav-link" data-en="Ask Query"      data-hi="सवाल पूछें">Ask Query</a>
+      <a href="{{ url_for('features') }}"       class="nav-link" data-en="Features"       data-hi="विशेषताएं">Features</a>
+      <a href="{{ url_for('contact') }}"        class="nav-link" data-en="Contact"        data-hi="संपर्क">Contact</a>
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('profile') }}"    class="nav-link" data-en="My Profile"  data-hi="मेरी प्रोफ़ाइल">My Profile</a>
+        <a href="{{ url_for('auth.logout') }}" class="nav-link" data-en="Logout" data-hi="लॉगआउट">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}"  class="nav-link" data-en="Login"   data-hi="लॉगिन">Login</a>
+        <a href="{{ url_for('auth.signup') }}" class="nav-link" data-en="Sign Up" data-hi="साइन अप">Sign Up</a>
+      {% endif %}
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-bar">
+        {% for cat, msg in messages %}
+          <div class="flash flash-{{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">🌱 AgroSage</div>
+        <p data-en="AI-powered crop guidance for every Indian farmer. Built with ❤️ by innovators."
+           data-hi="हर भारतीय किसान के लिए AI-आधारित फसल मार्गदर्शन।">
+          AI-powered crop guidance for every Indian farmer. Built with ❤️ by innovators.
+        </p>
+      </div>
+      <div class="footer-links">
+        <span class="footer-heading" data-en="Quick Links" data-hi="त्वरित लिंक">Quick Links</span>
+        <a href="{{ url_for('home') }}"           data-en="Home"           data-hi="होम">Home</a>
+        <a href="{{ url_for('recommendation') }}" data-en="Recommendation" data-hi="फसल सुझाव">Recommendation</a>
+        <a href="{{ url_for('query') }}"          data-en="Ask Query"      data-hi="सवाल पूछें">Ask Query</a>
+        <a href="{{ url_for('about') }}"          data-en="About"          data-hi="हमारे बारे में">About</a>
+        <a href="{{ url_for('contact') }}"        data-en="Contact"        data-hi="संपर्क">Contact</a>
+      </div>
+      <div class="footer-links">
+        <span class="footer-heading" data-en="Technology" data-hi="तकनीक">Technology</span>
+        <span>Python + Flask</span>
+        <span>Gemini 2.5 Flash</span>
+        <span>RAG + BGE-M3</span>
+        <span>ML Crop Model</span>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p data-en="© 2025 AgroSage. Shambhunath Institute of Engineering & Technology, Prayagraj."
+         data-hi="© 2025 एग्रोसेज। शंभूनाथ इंस्टीट्यूट ऑफ इंजीनियरिंग एंड टेक्नोलॉजी, प्रयागराज।">
+        © 2025 AgroSage. Shambhunath Institute of Engineering &amp; Technology, Prayagraj.
+      </p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Contact | AgroSage 2.0{% endblock %}
+
+{% block content %}
+<section class="contact">
+  <h1>Contact Us</h1>
+  <p>If you have questions, feedback, or need help, we’re here for you.</p>
+  <form method="POST" action="/contact">
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Your Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="message">Your Message:</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+{% endblock %}

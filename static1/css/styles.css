@@ -1,0 +1,452 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, #4caf50, #81c784);
+  padding: 1rem 2rem;
+  color: white;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+nav a {
+  margin: 0 1rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #e8f5e9;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(to right, #e8f5e9, #c8e6c9);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.cta-button {
+  background: #4caf50;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #388e3c;
+}
+
+/* Features Section */
+.features {
+  padding: 3rem 2rem;
+  background: #fff;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #f1f8e9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Footer */
+footer {
+  background: #2e7d32;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.social a {
+  margin: 0 0.5rem;
+  color: white;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+.about, .contact {
+  padding: 3rem 2rem;
+  background: #fff;
+  text-align: center;
+}
+
+.about p, .contact p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  font-size: 1.1rem;
+}
+
+.about-highlights {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.highlight {
+  background: #f1f8e9;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 250px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input, textarea {
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background: #4caf50;
+  color: white;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #388e3c;
+}
+
+.flash.success {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.query-section {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #fff;
+}
+
+.query-section h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.query-section p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+form textarea {
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+form button {
+  margin-top: 1rem;
+  background: #4caf50;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #388e3c;
+}
+
+#thinking {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #2e7d32;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.result-section {
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #fff;
+}
+
+.result-box {
+  background: #f1f8e9;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.result-box h3 {
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+}
+
+.user-question {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.ai-answer {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.cta-button {
+  background: #4caf50;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #388e3c;
+}
+
+
+.query-section {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+textarea {
+  width: 100%;
+  max-width: 600px;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 1rem;
+  background: #4caf50;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #4caf50;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.recommendation-section {
+  max-width: 600px;
+  margin: auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.recommendation-form input,
+.recommendation-form button {
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.result-box, .error-box {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f0f8ff;
+}
+
+.crop-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2e8b57;
+}
+
+.features-section {
+  padding: 2rem;
+  text-align: center;
+}
+.features-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #4CAF50;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+.feature-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+.feature-card h3 {
+  margin-top: 0;
+  color: #4CAF50;
+}
+.feature-card p {
+  margin-bottom: 0;
+}
+
+
+.recommendation-section {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+.recommendation-section h1 {
+  font-size: 2.2rem;
+  color: #4CAF50;
+}
+.recommendation-section .intro {
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  color: #555;
+}
+.recommendation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.form-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.form-row input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.recommend-btn {
+  background: #4CAF50;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.recommend-btn:hover {
+  background: #45a049;
+}
+.result-box, .error-box {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.result-box {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.error-box {
+  background: #ffebee;
+  color: #c62828;
+}
+.crop-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
