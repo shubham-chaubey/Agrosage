@@ -1,8 +1,7 @@
 """
-AgroSage 2.0 — app.py (Fixed)
-- Adds missing profile_update endpoint so templates using url_for('profile_update') work.
-- Keeps single POST RAG behavior (no streaming).
-- Assumes auth blueprint, rag.rag_engine.get_rag_answer, model.pkl, embeddings.joblib exist.
+AgroSage 2.0 — app.py (Full Secured Version)
+- Adds environment variable support for API security.
+- Keeps all original routes and ML logic intact.
 """
 
 from flask import (
@@ -11,6 +10,11 @@ from flask import (
 )
 import joblib
 import pandas as pd
+import os  # Added for security
+from dotenv import load_dotenv # Added for security
+
+# Load environment variables
+load_dotenv()
 
 from rag.rag_engine import get_rag_answer
 from auth import (
@@ -21,7 +25,8 @@ from auth import (
 
 # ── App setup ─────────────────────────────────────────────────────────────
 app = Flask(__name__)
-app.secret_key = 'agrosage_secret_2025'
+# Secret key ko bhi env se uthayenge, nahi toh default use hoga
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'agrosage_secret_2025')
 
 # Register auth blueprint and teardown
 app.register_blueprint(auth_bp)
@@ -96,12 +101,6 @@ def contact():
 # ── Query (RAG) ─────────────────────────────────────────────────────────
 @app.route('/query', methods=['GET', 'POST'])
 def query():
-    """
-    GET  → render the chat page
-    POST → run RAG, return JSON  { question, answer }
-
-    One POST = One RAG call. No streaming.
-    """
     if request.method == 'POST':
         q = request.form.get('question', '').strip()
         if not q:
@@ -112,13 +111,12 @@ def query():
         except Exception as e:
             ans = f"Error: {e}"
 
-        # Save to DB if user is logged in
         user_id = session.get('user_id')
         if user_id:
             try:
                 save_query(user_id, q, ans)
             except Exception:
-                pass  # Non-critical — don't break the response
+                pass
 
         return jsonify({'question': q, 'answer': ans})
 
@@ -159,10 +157,6 @@ def recommendation():
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile():
-    """
-    Renders profile page. The profile update form in templates may post to
-    the separate /profile/update endpoint (profile_update) — see below.
-    """
     user_id = session.get('user_id')
     user    = get_user_by_id(user_id)
     return render_template('profile.html', user=user)
@@ -171,10 +165,6 @@ def profile():
 @app.route('/profile/update', methods=['POST'])
 @login_required
 def profile_update():
-    """
-    Separate endpoint for profile updates. Templates that call
-    url_for('profile_update') will now resolve correctly.
-    """
     user_id = session.get('user_id')
     fullname = request.form.get('fullname', '').strip()
     location = request.form.get('location', '').strip()
@@ -182,7 +172,6 @@ def profile_update():
     if fullname or location:
         try:
             update_profile(user_id, fullname, location)
-            # update session display name if provided
             if fullname:
                 session['fullname'] = fullname
             flash("Profile updated successfully.", "success")
@@ -198,7 +187,6 @@ def profile_update():
 @app.route('/admin')
 @login_required
 def admin():
-    # Simple guard: only user with id=1 is admin
     if session.get('user_id') != 1:
         flash("Admin access only.", "error")
         return redirect(url_for('home'))

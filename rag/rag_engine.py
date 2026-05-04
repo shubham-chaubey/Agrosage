@@ -13,6 +13,11 @@ QUOTA-SAFE design (same as original AgroSage):
 """
 
 import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+
+# Environment variables load karne ke liye
+load_dotenv()
 import numpy as np
 import joblib
 import requests
