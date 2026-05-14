@@ -2,6 +2,33 @@
 {% block title %}Ask Query | AgroSage{% endblock %}
 
 {% block content %}
+<!-- ── CUSTOM CSS FOR MARKDOWN FORMATTING ── -->
+<style>
+  .msg.bot .msg-bubble {
+    line-height: 1.6;
+  }
+  .msg.bot .msg-bubble strong {
+    color: #4CAF50; /* Green highlight for headings/important terms */
+  }
+  .msg.bot .msg-bubble ul, .msg.bot .msg-bubble ol {
+    margin-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+  .msg.bot .msg-bubble li {
+    margin-bottom: 5px;
+  }
+  .msg.bot .msg-bubble p {
+    margin-bottom: 10px;
+  }
+  .msg.bot .msg-bubble h1, .msg.bot .msg-bubble h2, .msg.bot .msg-bubble h3 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #2e7d32;
+  }
+</style>
+
 <div class="query-page">
 
   <!-- ── LEFT: CHAT ── -->
@@ -84,6 +111,9 @@
     </div>
   </div>
 </div>
+
+<!-- ── IMPORT MARKED.JS LIBRARY HERE ── -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <script>
 const chatMessages  = document.getElementById('chatMessages');
@@ -171,9 +201,13 @@ queryForm.addEventListener('submit', async e => {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
     const data   = await resp.json();
-    const answer = data.answer || 'No response received.';
+    let answer = data.answer || 'No response received.';
 
     document.getElementById('typingDots')?.remove();
+    
+    // ── THE MAGIC HAPPENS HERE: Parse Markdown to HTML ──
+    answer = marked.parse(answer);
+
     addBubble('bot', answer);
 
   } catch (err) {
