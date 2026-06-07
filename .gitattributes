@@ -1,0 +1,26 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# GitHub language detection (Linguist)
+# Goal: show PYTHON as the primary language, not HTML/CSS.
+# Templates, static assets, and data files are excluded from the language stats.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Treat frontend template/asset folders as vendored (excluded from stats)
+templates/**    linguist-vendored
+templates2/**   linguist-vendored
+static/**       linguist-vendored
+static1/**      linguist-vendored
+
+# Don't count markup/style files toward the language breakdown
+*.html          linguist-detectable=false
+*.css           linguist-detectable=false
+
+# Mark data/model artifacts as data or binary (not source code)
+*.csv           linguist-data
+*.json          linguist-data
+*.joblib        binary
+*.pkl           binary
+*.db            binary
+
+# Normalise line endings for text files
+* text=auto
+*.py            text eol=lf
